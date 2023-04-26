@@ -1,0 +1,9 @@
+
+# Node files
+node_modules/
+
+# Build files
+dist/
+
+# VS Code files
+.vscode/
