@@ -8,6 +8,7 @@ First install [GraphIR](https://github.com/AdiHarif/GraphIR):
 git clone https://github.com/AdiHarif/GraphIR # (not necessarily in Graph-Interpreter directory)
 cd GraphIR
 npm install
+npm run build
 npm link
 ```
 
