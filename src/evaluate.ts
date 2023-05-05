@@ -1,45 +1,33 @@
-import { BinaryOperationVertex, ReturnVertex, VertexKind, Value, ControlVertex, LiteralVertex, DataVertex } from 'graphir';
-import { GraphInterpreter } from './interpreter'
-import { BinaryOperation } from '../../TS-Graph-Extractor/src/types'
+import { BinaryOperationVertex, BinaryOperation, ReturnVertex, VertexKind, Value, ControlVertex, LiteralVertex, DataVertex } from 'graphir';
+import { State } from './state'
 
-export function evaluateControlNode(node: ControlVertex): Value {
-    switch (node.kind) {
-        case VertexKind.Return:
-            return evaluateDataNode((<ReturnVertex>node).value as DataVertex);
-        default:
-            throw new Error(`Control node kind invalid or not implemented`);
-    }
-}
 
-export function evaluateDataNode(node: DataVertex): Value {
+export function evaluateDataNode(state: State, node: DataVertex): Value {
     let value: Value = 0;
 
     switch (node.kind) {
         case VertexKind.Literal:
             value = (<LiteralVertex>node).value as Value;
-            GraphInterpreter.getInstance().state.setVertexValue(node.id, value);
             return value;
 
         case VertexKind.BinaryOperation:
-            value = evaluateBinaryNode(node as BinaryOperationVertex);
-            GraphInterpreter.getInstance().state.setVertexValue(node.id, value);
+            value = evaluateBinaryNode(state, node as BinaryOperationVertex);
             return value;
 
         default:
-            throw new Error(`Data node kind invalid or not implemented`);     
+            throw new Error(`Data node kind invalid or not implemented`);
     }
 }
 
-export function evaluateBinaryNode(node: BinaryOperationVertex): Value {
-    let leftValue: Value = evaluateDataNode(node.left!);
-    let rightValue: Value = evaluateDataNode(node.right!);
+export function evaluateBinaryNode(state: State, node: BinaryOperationVertex): Value {
+    let leftValue: Value = evaluateDataNode(state, node.left!);
+    let rightValue: Value = evaluateDataNode(state, node.right!);
 
     if ((typeof leftValue === "number") && (typeof rightValue === "number")) {
         switch (node.operator) {
             case BinaryOperation.Add: return (leftValue + rightValue);
             case BinaryOperation.Sub: return (leftValue - rightValue);
             case BinaryOperation.Mul: return (leftValue * rightValue);
-            // [TODO] check division by zero?
             case BinaryOperation.Div: return (leftValue / rightValue);
             case BinaryOperation.LessThan: return (leftValue < rightValue);
             case BinaryOperation.GreaterThan: return (leftValue > rightValue);

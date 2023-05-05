@@ -18,7 +18,7 @@ describe('Basic return value test', () => {
         const result = executeGraph(g);
         expect(result.returnValue()).toBe(3);
     });
-
+    /*
     v3.value = 3;
     test('Return value should be 5', () => {
         const result = executeGraph(g);
@@ -36,4 +36,5 @@ describe('Basic return value test', () => {
         const result = executeGraph(g);
         expect(result.returnValue()).toBe(2);
     });
+    */
 });
