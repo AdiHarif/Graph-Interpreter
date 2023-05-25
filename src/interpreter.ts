@@ -12,7 +12,10 @@ export class ExecutionResult {
     }
 
     queryVertexValue(vertex: Vertex): unknown {
-        return this._finalState.getVertexValue(vertex);
+        if (this._finalState.vertexExists(vertex.id) ==  false) {
+            throw new Error(`Vertex value does not exist in the program final state`);
+        }
+        return this._finalState.getVertexData(vertex);
     }
 
     returnValue(): unknown {

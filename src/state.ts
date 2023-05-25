@@ -1,37 +1,44 @@
 import assert from 'assert';
 import { Value, Vertex, VertexKind } from 'graphir';
 
+export type VertexId = number;
+export type Property = string;
+export type ObjectFields = { [key: Property]: DataVariant }
+export type DataVariant = Value | ObjectFields;
+
 export class State {
     
-    private _verticesValuesMap: Map<number, Value>;
-    private _returnedValue: Value = 0; // assumption: the program always returns a value
+    private _verticesValuesMap: { [key: VertexId]: DataVariant } = {};
+    private _returnedValue: DataVariant = 0; // assumption: the program always returns a value
 
-    constructor() {
-        this._verticesValuesMap = new Map<number, Value>();
-    }
-
-    setVertexValue(vertex: Vertex, value: Value) {
+    setVertexData(vertex: Vertex, value: DataVariant) {
         assert(this.isStateful(vertex.kind));
-        this._verticesValuesMap.set(vertex.id, value);
+        this._verticesValuesMap[vertex.id] = value;
     }
 
-    getVertexValue(vertex: Vertex): Value {
-        assert(this.isStateful(vertex.kind));
-        if (this._verticesValuesMap.has(vertex.id) == false) {
-            throw new Error(`Vertex id ${vertex.id} value doesn't exist in the program state`);
-        }
-        return this._verticesValuesMap.get(vertex.id) as Value;
+    getVertexData(vertex: Vertex): DataVariant {
+        return this._verticesValuesMap[vertex.id] as DataVariant;
     }
 
-    vertexValueExists(id: number): boolean {
-        return (this._verticesValuesMap.has(id) == true);
+    vertexExists(id: VertexId): boolean {
+        return (id in this._verticesValuesMap);
     }
 
-    setReturnedValue(returnedValue: Value) {
+    setObjectField(id: VertexId, property: Property, fieldValue: DataVariant) {
+        let objectFields: ObjectFields = this._verticesValuesMap[id] as ObjectFields;
+        objectFields[property] = fieldValue;
+    }
+
+    getObjectField(id: VertexId, property: Property): DataVariant {
+        let objectFields: ObjectFields = this._verticesValuesMap[id] as ObjectFields;
+        return objectFields[property];
+    }
+
+    setReturnedValue(returnedValue: DataVariant) {
         this._returnedValue = returnedValue;
     }
 
-    getReturnedValue(): Value {
+    getReturnedValue(): DataVariant {
         return this._returnedValue;
     }
 
