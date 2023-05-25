@@ -18,23 +18,22 @@ describe('Basic return value test', () => {
         const result = executeGraph(g);
         expect(result.returnValue()).toBe(3);
     });
-    /*
-    v3.value = 3;
+
     test('Return value should be 5', () => {
+        v3.value = 3;
         const result = executeGraph(g);
         expect(result.returnValue()).toBe(5);
     });
 
-    v5.operator = '-';
     test('Return value should be 1', () => {
+        v5.operator = '-';
         const result = executeGraph(g);
         expect(result.returnValue()).toBe(1);
     });
 
-    v3.value = 4;
     test('Return value should be 2', () => {
+        v3.value = 4;
         const result = executeGraph(g);
         expect(result.returnValue()).toBe(2);
     });
-    */
 });
