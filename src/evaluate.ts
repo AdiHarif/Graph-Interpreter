@@ -1,9 +1,8 @@
-import { BinaryOperationVertex, BinaryOperation, ReturnVertex, VertexKind, Value, ControlVertex, LiteralVertex, DataVertex } from 'graphir';
-import { State } from './state'
+import { BinaryOperationVertex, BinaryOperation, VertexKind, Value, LiteralVertex, DataVertex } from 'graphir';
+import { State, DataVariant } from './state'
 
-
-export function evaluateDataNode(state: State, node: DataVertex): Value {
-    let value: Value = 0;
+export function evaluateDataNode(state: State, node: DataVertex): DataVariant {
+    let value: DataVariant;
 
     switch (node.kind) {
         case VertexKind.Literal:
@@ -14,14 +13,28 @@ export function evaluateDataNode(state: State, node: DataVertex): Value {
             value = evaluateBinaryNode(state, node as BinaryOperationVertex);
             return value;
 
+        case VertexKind.Allocation:
+            if (state.vertexExists(node.id) ==  false) {
+                throw new Error(`Allocation vertex's value does not exist in the program state`);
+            }
+            value = state.getVertexData(node);
+            return value;
+
+        case VertexKind.Load:
+            if (state.vertexExists(node.id) ==  false) {
+                throw new Error(`Load vertex's value does not exist in the program state`);
+            }
+            value = state.getVertexData(node);
+            return value;
+
         default:
             throw new Error(`Data node kind invalid or not implemented`);
     }
 }
 
-export function evaluateBinaryNode(state: State, node: BinaryOperationVertex): Value {
-    let leftValue: Value = evaluateDataNode(state, node.left!);
-    let rightValue: Value = evaluateDataNode(state, node.right!);
+function evaluateBinaryNode(state: State, node: BinaryOperationVertex): Value {
+    let leftValue: Value = evaluateDataNode(state, node.left!) as Value;
+    let rightValue: Value = evaluateDataNode(state, node.right!) as Value;
 
     if ((typeof leftValue === "number") && (typeof rightValue === "number")) {
         switch (node.operator) {
