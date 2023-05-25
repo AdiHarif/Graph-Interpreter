@@ -3,7 +3,7 @@ import * as ir from 'graphir';
 
 import { executeGraph } from '../src/interpreter';
 
-describe('Basic return value test', () => {
+describe('Basic object operations test', () => {
     const v1 = new ir.StartVertex();
     const v2 = new ir.AllocationVertex();
     const v3 = new ir.StoreVertex();

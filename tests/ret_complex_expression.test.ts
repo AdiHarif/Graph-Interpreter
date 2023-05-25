@@ -3,7 +3,7 @@ import * as ir from 'graphir';
 
 import { executeGraph } from '../src/interpreter';
 
-describe('Basic return value test', () => {
+describe('Complex expression return test', () => {
     const v1 = new ir.StartVertex();
     const v2 = new ir.ReturnVertex();
     const v3 = new ir.LiteralVertex(1);
