@@ -2,30 +2,30 @@ import { BinaryOperationVertex, BinaryOperation, VertexKind, Value, LiteralVerte
 import { State, DataVariant } from './state'
 
 export function evaluateDataNode(state: State, node: DataVertex): DataVariant {
-    let value: DataVariant;
-
     switch (node.kind) {
         case VertexKind.Literal:
-            value = (<LiteralVertex>node).value as Value;
-            return value;
+            return (<LiteralVertex>node).value as Value;
 
         case VertexKind.BinaryOperation:
-            value = evaluateBinaryNode(state, node as BinaryOperationVertex);
-            return value;
+            return evaluateBinaryNode(state, node as BinaryOperationVertex);
 
         case VertexKind.Allocation:
             if (state.vertexExists(node.id) ==  false) {
                 throw new Error(`Allocation vertex's value does not exist in the program state`);
             }
-            value = state.getVertexData(node);
-            return value;
+            return state.getVertexData(node);
 
         case VertexKind.Load:
             if (state.vertexExists(node.id) ==  false) {
                 throw new Error(`Load vertex's value does not exist in the program state`);
             }
-            value = state.getVertexData(node);
-            return value;
+            return state.getVertexData(node);
+
+        case VertexKind.Phi:
+            if (state.vertexExists(node.id) ==  false) {
+                throw new Error(`Phi vertex's value does not exist in the program state`);
+            }
+            return state.getVertexData(node);
 
         default:
             throw new Error(`Data node kind invalid or not implemented`);

@@ -36,6 +36,6 @@ describe('Basic phi test', () => {
     test('Return value should be 2', () => {
         v3.value = false;
         const result = executeGraph(g);
-        expect(result.returnValue()).toBe(1);
+        expect(result.returnValue()).toBe(2);
     });
 });

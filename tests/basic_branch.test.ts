@@ -42,6 +42,6 @@ describe('Basic branch test', () => {
     test('Return value should be 2', () => {
         cond.value = false;
         const result = executeGraph(g);
-        expect(result.returnValue()).toBe(1);
+        expect(result.returnValue()).toBe(2);
     });
 });
