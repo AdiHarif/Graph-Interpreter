@@ -1,5 +1,5 @@
 
-import { Graph, Vertex, NonTerminalControlVertex, ControlVertex, VertexKind } from 'graphir';
+import { Graph, Vertex, ControlVertex, VertexKind, MergeVertex } from 'graphir';
 import { State } from './state'
 import * as execute from './execute'
 
@@ -29,21 +29,15 @@ export function executeGraph(graph: Graph): ExecutionResult {
     }
     
     let state = new State();
-    let currentNode: ControlVertex = graph.getStartVertex().next!;
+    let previousNode: ControlVertex | undefined = graph.getStartVertex();
+    let currentNode: ControlVertex | undefined = graph.getStartVertex().next;
+    let nextNode: ControlVertex | undefined;
 
     while (currentNode !== undefined) {
-        execute.executeControlNode(state, currentNode);
-
-        if (currentNode instanceof NonTerminalControlVertex) {
-            currentNode = currentNode.next as ControlVertex;
-        }
-        else if (currentNode.kind == VertexKind.Return) {
-            break;
-        }
-        else {
-            throw new Error(`Reached a branch vertex - not implemented`);
-        }
+        nextNode = execute.executeControlNode(state, currentNode, previousNode);
+        previousNode = currentNode;
+        currentNode = nextNode;
     }
-
+    
     return new ExecutionResult(state);
 }

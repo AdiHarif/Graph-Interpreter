@@ -44,7 +44,7 @@ export class State {
 
     private isStateful(vertexKind: VertexKind): boolean {
         switch (vertexKind) {
-            case VertexKind.Merge:
+            case VertexKind.Phi:
             case VertexKind.Allocation:
             case VertexKind.Load:
             case VertexKind.Call:
