@@ -1,5 +1,5 @@
 
-import { Graph, Vertex, NonTerminalControlVertex, ControlVertex } from 'graphir';
+import { Graph, Vertex, ControlVertex, VertexKind, MergeVertex } from 'graphir';
 import { State } from './state'
 import * as execute from './execute'
 
@@ -12,7 +12,10 @@ export class ExecutionResult {
     }
 
     queryVertexValue(vertex: Vertex): unknown {
-        return this._finalState.getVertexValue(vertex);
+        if (this._finalState.vertexExists(vertex.id) ==  false) {
+            throw new Error(`Vertex value does not exist in the program final state`);
+        }
+        return this._finalState.getVertexData(vertex);
     }
 
     returnValue(): unknown {
@@ -26,12 +29,15 @@ export function executeGraph(graph: Graph): ExecutionResult {
     }
     
     let state = new State();
-    let currentNode: NonTerminalControlVertex = graph.getStartVertex().next!;
+    let previousNode: ControlVertex | undefined = graph.getStartVertex();
+    let currentNode: ControlVertex | undefined = graph.getStartVertex().next;
+    let nextNode: ControlVertex | undefined;
 
     while (currentNode !== undefined) {
-        execute.executeControlNode(state, currentNode);
-        currentNode = currentNode.next as ControlVertex;
+        nextNode = execute.executeControlNode(state, currentNode, previousNode);
+        previousNode = currentNode;
+        currentNode = nextNode;
     }
-
+    
     return new ExecutionResult(state);
 }
