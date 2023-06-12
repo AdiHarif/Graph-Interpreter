@@ -1,14 +1,14 @@
-import { ReturnVertex, VertexKind, ControlVertex, DataVertex, StoreVertex, LoadVertex, NonTerminalControlVertex, MergeVertex, BranchVertex, Value, PhiEdge, PhiOperand } from 'graphir';
-import { State, VertexId, DataVariant, Property } from './state'
-import * as evaluate from './evaluate'
+import { ReturnVertex, VertexKind, ControlVertex, DataVertex, StoreVertex, LoadVertex, NonTerminalControlVertex, MergeVertex, BranchVertex, Value, PhiEdge, PhiOperand, CallVertex, SymbolVertex } from 'graphir';
+import { State, DataVariant, Property, ObjectFields } from './state';
+import * as evaluate from './evaluate';
+import { GraphInterpreter, log } from './interpreter';
+import { RunTimeError } from './exceptions';
 
-export function executeControlNode(state: State, node: ControlVertex, cameFrom: ControlVertex): ControlVertex | undefined {
+export function executeControlNode(interp: GraphInterpreter, node: ControlVertex, cameFrom: ControlVertex): ControlVertex | undefined {
+    let state: State = interp.getTopState();
+    
     switch (node.kind) {
-        case VertexKind.Return:
-            let returnedValue: DataVariant =  evaluate.evaluateDataNode(state, (<ReturnVertex>node).value as DataVertex);
-            state.setReturnedValue(returnedValue);
-            return undefined;
-
+        case VertexKind.Start: 
         case VertexKind.Pass:
             break;
 
@@ -28,10 +28,17 @@ export function executeControlNode(state: State, node: ControlVertex, cameFrom: 
             return executeBranchNode(state, node as BranchVertex);
 
         case VertexKind.Merge:
-            return executeMergeNode(state, node as MergeVertex, cameFrom);
+            executeMergeNode(state, node as MergeVertex, cameFrom);
+            break;
+
+        case VertexKind.Call:
+            return executeCallNode(interp, node as CallVertex);
+
+        case VertexKind.Return:
+            return executeReturnNode(interp, node as ReturnVertex);    
 
         default:
-            throw new Error(`Control node kind invalid or not implemented`);
+            throw new Error(`Control node kind ${node.kind} invalid or not implemented`);
     }
 
     // return the next node
@@ -42,11 +49,8 @@ export function executeControlNode(state: State, node: ControlVertex, cameFrom: 
 }
 
 function executeStoreNode(state: State, node: StoreVertex) {
-    // get the object vertex's id
-    let objectId: VertexId = node.object?.id as VertexId;
-    if (state.vertexExists(objectId) ==  false) {
-        throw new Error(`Store vertex's object vertex does not exist in the program state`);
-    }
+    // get the object
+    let object: ObjectFields = evaluate.evaluateDataNode(state, node.object as DataVertex) as ObjectFields; // [TODO] check if really always true
 
     // get the property's name
     let propertyVertex: DataVertex = node.property as DataVertex;
@@ -56,25 +60,28 @@ function executeStoreNode(state: State, node: StoreVertex) {
     let valueVertex: DataVertex = node.value as DataVertex;
     let value: DataVariant = evaluate.evaluateDataNode(state, valueVertex);
 
-    // store the value in the program state
-    state.setObjectField(objectId, property, value);
+    // store the value in the field
+    object[property] = value;
 }
 
 function executeLoadNode(state: State, node: LoadVertex) {
-    // get the object vertex's id
-    let objectId: VertexId = node.object?.id as VertexId;
-    if (state.vertexExists(objectId) ==  false) {
-        throw new Error(`Load vertex's object vertex does not exist in the program state`);
-    }
+    // get the object
+    let object: ObjectFields = evaluate.evaluateDataNode(state, node.object as DataVertex) as ObjectFields;
 
     // get the property's name
     let propertyVertex: DataVertex = node.property as DataVertex;
     let property: Property = evaluate.evaluateDataNode(state, propertyVertex) as string;
 
-    // load the value from the program state
-    let value: DataVariant = state.getObjectField(objectId, property);
+    if (object[property] !== undefined) {
+        // load the value of the field
+        let value: DataVariant = object[property];
 
-    state.setVertexData(node, value);
+        // save the value in the top state
+        state.setVertexData(node, value);
+    }
+    else {
+        throw new RunTimeError(`Property "${property}" doesn't exist in object`);
+    }
 }
 
 function executeBranchNode(state: State, node: BranchVertex): ControlVertex {
@@ -85,7 +92,7 @@ function executeBranchNode(state: State, node: BranchVertex): ControlVertex {
     return node.falseNext as ControlVertex;
 }
 
-function executeMergeNode(state: State, node: MergeVertex, cameFrom: ControlVertex): ControlVertex {
+function executeMergeNode(state: State, node: MergeVertex, cameFrom: ControlVertex) {
     // evaluate phi and set its value in the program state
     node.phiVertices.forEach( (phiNode) => {
         let phiOperands: Array<PhiOperand> = phiNode.outEdges.filter((edge) => edge instanceof PhiEdge).map((edge) => {
@@ -99,5 +106,42 @@ function executeMergeNode(state: State, node: MergeVertex, cameFrom: ControlVert
             }
         });
     });
-    return node.next as ControlVertex;
+}
+
+function executeCallNode(interp: GraphInterpreter, node: CallVertex): ControlVertex {
+    let currentState: State = interp.getTopState();
+    let newState: State = new State(node);
+
+    // add the parameters values to the new state
+    let args: Array<DataVertex> | undefined = node.args;
+    args?.forEach( (argNode) => { // assumption: the args list is sorted by the position
+        let argValue: DataVariant = evaluate.evaluateDataNode(currentState, argNode);
+        newState.addParameterData(argValue);
+    } );
+    interp.pushState(newState);
+
+    // the next control vertex is the start vertex of the callee
+    let functionSymbol: SymbolVertex = node.callee as SymbolVertex;
+    log.writeLogLine(`Call Function: ${node.callee?.label}`);
+    return functionSymbol.startVertex as ControlVertex;
+}
+
+function executeReturnNode(interp: GraphInterpreter, node: ReturnVertex): ControlVertex | undefined {
+    let terminatedState: State = interp.getTopState();
+    let returnAddress: CallVertex | undefined = terminatedState.getReturnAddress();
+    let returnedValue: DataVariant =  evaluate.evaluateDataNode(terminatedState, node.value as DataVertex);
+
+    if (returnAddress !== undefined) {
+        // end of function scope
+        interp.popState();
+        let state: State = interp.getTopState();
+
+        // save the returned value as the call vertex's state
+        state.setVertexData(returnAddress, returnedValue);
+
+        return returnAddress.next;
+    }
+    // end of global state
+    interp.setReturnedValue(returnedValue);
+    return undefined;
 }
