@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { Value, Vertex, VertexKind } from 'graphir';
+import { Value, Vertex, VertexKind, ParameterVertex, CallVertex } from 'graphir';
 
 export type VertexId = number;
 export type Property = string;
@@ -8,8 +8,18 @@ export type DataVariant = Value | ObjectFields;
 
 export class State {
     
+    // dictionary of (vertexId, value/object) for each stateful vertex in the state's scope
     private _verticesValuesMap: { [key: VertexId]: DataVariant } = {};
-    private _returnedValue: DataVariant = 0; // assumption: the program always returns a value
+
+    // array of (possition, value/object) for each parameter
+    private _functionParameters: Array<DataVariant> = [];
+
+    // the call vertex that invoked the state's scope
+    private _returnAddress: CallVertex | undefined = undefined;
+
+    public constructor(returnAddress: CallVertex | undefined) {
+        this._returnAddress = returnAddress;
+    }
 
     setVertexData(vertex: Vertex, value: DataVariant) {
         assert(this.isStateful(vertex.kind));
@@ -20,26 +30,24 @@ export class State {
         return this._verticesValuesMap[vertex.id] as DataVariant;
     }
 
-    vertexExists(id: VertexId): boolean {
+    vertexExistsInMap(id: VertexId): boolean {
         return (id in this._verticesValuesMap);
     }
 
-    setObjectField(id: VertexId, property: Property, fieldValue: DataVariant) {
-        let objectFields: ObjectFields = this._verticesValuesMap[id] as ObjectFields;
-        objectFields[property] = fieldValue;
+    addParameterData(value: DataVariant) {
+        this._functionParameters.push(value);
     }
 
-    getObjectField(id: VertexId, property: Property): DataVariant {
-        let objectFields: ObjectFields = this._verticesValuesMap[id] as ObjectFields;
-        return objectFields[property];
+    getParameterData(param: ParameterVertex): DataVariant {
+        return this._functionParameters[param.position as number] as DataVariant;
     }
 
-    setReturnedValue(returnedValue: DataVariant) {
-        this._returnedValue = returnedValue;
+    parameterExist(position: number): boolean {
+        return (this._functionParameters.length > position);
     }
 
-    getReturnedValue(): DataVariant {
-        return this._returnedValue;
+    getReturnAddress(): CallVertex | undefined {
+        return this._returnAddress;
     }
 
     private isStateful(vertexKind: VertexKind): boolean {
@@ -52,5 +60,18 @@ export class State {
             default:
                 return false;
         }
+    }
+
+    peek(): Array<string> {
+        let out: Array<string> = [];
+        out.push(`/// Data Vertices ///\n`)
+        for (let key in this._verticesValuesMap) {
+            out.push(`vertex-${key} : ${this._verticesValuesMap[key]}\n`);
+        }
+        out.push(`/// Function Parameters ///\n`)
+        for (let i = 0; i < this._functionParameters.length; i++) {
+            out.push(`position-${i} : ${this._functionParameters[i]}\n`);
+        }
+        return out;
     }
 }
