@@ -1,0 +1,782 @@
+---------------------------------
+Run test: Call with return value
+z3 initialized
+evaluate parameter: node 3, position 0
+expressLiteralNode: node 13, value 0
+expressLiteralNode: node 18, value 1
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< 0.0 p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0) p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode, node id: 11
+evaluate parameter: node 15, position 0
+expressBinaryNode: node 16, operator <
+leftExpression.sort: Real, rightExpression.sort: Real
+symbolicExecuteBranchNode - condition: (< (+ 0.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0
+      1.0)
+   p0)
+smtSolve - sat: sat
+smtSolve - sat: sat
+expressLiteralNode: node -1, value 1
+expressBinaryNode: node -1, operator +
+leftExpression.sort: Real, rightExpression.sort: Real
+expressLiteralNode: node 19, value 2
+expressBinaryNode: node 20, operator *
+leftExpression.sort: Real, rightExpression.sort: Real
+finished running, returning from symbex. total paths in run: 33
+Didn't find a bug!

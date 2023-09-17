@@ -1,68 +1,60 @@
 import assert from 'assert';
-import { Value, Vertex, VertexKind, ParameterVertex, CallVertex } from 'graphir';
+import * as ir from 'graphir';
 
 export type VertexId = number;
-export type Property = string;
-export type ObjectFields = { [key: Property]: DataVariant }
-export type DataVariant = Value | ObjectFields;
 
-export class State {
+export class State<T> {
     
     // dictionary of (vertexId, value/object) for each stateful vertex in the state's scope
-    private _verticesValuesMap: { [key: VertexId]: DataVariant } = {};
+    private _verticesValuesMap: { [key: VertexId]: T } = {};
 
     // array of (possition, value/object) for each parameter
-    private _functionParameters: Array<DataVariant> = [];
+    private _functionParameters: T[] = [];
 
     // the call vertex that invoked the state's scope
-    private _returnAddress: CallVertex | undefined = undefined;
+    private _returnAddress: ir.CallVertex | undefined = undefined;
 
-    public constructor(returnAddress: CallVertex | undefined) {
+    public constructor(returnAddress: ir.CallVertex | undefined) {
         this._returnAddress = returnAddress;
     }
 
-    setVertexData(vertex: Vertex, value: DataVariant) {
+    public setVertexData(vertex: ir.Vertex, value: T) {
         assert(this.isStateful(vertex.kind));
         this._verticesValuesMap[vertex.id] = value;
     }
 
-    getVertexData(vertex: Vertex): DataVariant {
-        return this._verticesValuesMap[vertex.id] as DataVariant;
+    public getVertexData(vertex: ir.Vertex): T {
+        return this._verticesValuesMap[vertex.id] as T;
     }
 
-    vertexExistsInMap(id: VertexId): boolean {
+    public vertexExistsInMap(id: VertexId): boolean {
         return (id in this._verticesValuesMap);
     }
 
-    addParameterData(value: DataVariant) {
+    public addParameterData(value: T) {
         this._functionParameters.push(value);
     }
 
-    getParameterData(param: ParameterVertex): DataVariant {
-        return this._functionParameters[param.position as number] as DataVariant;
+    public getParameterData(param: ir.ParameterVertex): T {
+        return this._functionParameters[param.position as number];
     }
 
-    parameterExist(position: number): boolean {
+    public parameterExist(position: number): boolean {
         return (this._functionParameters.length > position);
     }
 
-    getReturnAddress(): CallVertex | undefined {
+    public getReturnAddress(): ir.CallVertex | undefined {
         return this._returnAddress;
     }
 
-    private isStateful(vertexKind: VertexKind): boolean {
-        switch (vertexKind) {
-            case VertexKind.Phi:
-            case VertexKind.Allocation:
-            case VertexKind.Load:
-            case VertexKind.Call:
-                return true;
-            default:
-                return false;
-        }
+    public clone(): State<T> {
+        let clone: State<T> = new State<T>(this._returnAddress);
+        clone._verticesValuesMap = Object.assign({}, this._verticesValuesMap);
+        clone._functionParameters = this._functionParameters.slice();
+        return clone;
     }
 
-    peek(): Array<string> {
+    public peek(): Array<string> {
         let out: Array<string> = [];
         out.push(`/// Data Vertices ///\n`)
         for (let key in this._verticesValuesMap) {
@@ -73,5 +65,18 @@ export class State {
             out.push(`position-${i} : ${this._functionParameters[i]}\n`);
         }
         return out;
+    }
+
+    private isStateful(vertexKind: ir.VertexKind): boolean {
+        switch (vertexKind) {
+            case ir.VertexKind.Phi:
+            case ir.VertexKind.Allocation:
+            case ir.VertexKind.Load:
+            case ir.VertexKind.Call:
+            case ir.VertexKind.Literal: // only for symbolic variable!
+                return true;
+            default:
+                return false;
+        }
     }
 }

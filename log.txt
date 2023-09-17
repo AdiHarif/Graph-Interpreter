@@ -1,0 +1,134 @@
+createLog
+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+# --- start --- vertex-2 --- kind-Call ---
+# --- end --- vertex-2 --- kind-Call ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 5
+# --- start --- vertex-4 --- kind-Start ---
+# --- end --- vertex-4 --- kind-Start ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 5
+# --- start --- vertex-8 --- kind-Branch ---
+# --- end --- vertex-8 --- kind-Branch ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 5
+# --- start --- vertex-12 --- kind-Call ---
+# --- end --- vertex-12 --- kind-Call ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 4
+# --- start --- vertex-4 --- kind-Start ---
+# --- end --- vertex-4 --- kind-Start ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 4
+# --- start --- vertex-8 --- kind-Branch ---
+# --- end --- vertex-8 --- kind-Branch ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 4
+# --- start --- vertex-12 --- kind-Call ---
+# --- end --- vertex-12 --- kind-Call ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 3
+# --- start --- vertex-4 --- kind-Start ---
+# --- end --- vertex-4 --- kind-Start ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 3
+# --- start --- vertex-8 --- kind-Branch ---
+# --- end --- vertex-8 --- kind-Branch ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 3
+# --- start --- vertex-12 --- kind-Call ---
+# --- end --- vertex-12 --- kind-Call ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 2
+# --- start --- vertex-4 --- kind-Start ---
+# --- end --- vertex-4 --- kind-Start ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 2
+# --- start --- vertex-8 --- kind-Branch ---
+# --- end --- vertex-8 --- kind-Branch ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 2
+# --- start --- vertex-12 --- kind-Call ---
+# --- end --- vertex-12 --- kind-Call ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 1
+# --- start --- vertex-4 --- kind-Start ---
+# --- end --- vertex-4 --- kind-Start ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 1
+# --- start --- vertex-8 --- kind-Branch ---
+# --- end --- vertex-8 --- kind-Branch ---
+The top state in the stack:
+/// Data Vertices ///
+/// Function Parameters ///
+position-0 : 1
+# --- start --- vertex-10 --- kind-Return ---
+# --- end --- vertex-10 --- kind-Return ---
+The top state in the stack:
+/// Data Vertices ///
+vertex-12 : 1
+/// Function Parameters ///
+position-0 : 2
+# --- start --- vertex-13 --- kind-Return ---
+# --- end --- vertex-13 --- kind-Return ---
+The top state in the stack:
+/// Data Vertices ///
+vertex-12 : 2
+/// Function Parameters ///
+position-0 : 3
+# --- start --- vertex-13 --- kind-Return ---
+# --- end --- vertex-13 --- kind-Return ---
+The top state in the stack:
+/// Data Vertices ///
+vertex-12 : 6
+/// Function Parameters ///
+position-0 : 4
+# --- start --- vertex-13 --- kind-Return ---
+# --- end --- vertex-13 --- kind-Return ---
+The top state in the stack:
+/// Data Vertices ///
+vertex-12 : 24
+/// Function Parameters ///
+position-0 : 5
+# --- start --- vertex-13 --- kind-Return ---
+# --- end --- vertex-13 --- kind-Return ---
+The top state in the stack:
+/// Data Vertices ///
+vertex-2 : 120
+/// Function Parameters ///
+# --- start --- vertex-9 --- kind-Return ---
+# --- end --- vertex-9 --- kind-Return ---
+The top state in the stack:
+/// Data Vertices ///
+vertex-2 : 120
+/// Function Parameters ///
+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+closeLog

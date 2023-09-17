@@ -22,6 +22,7 @@ describe('Basic phi test', () => {
     v4.next = v6;
     v5.next = v6;
     v6.next = v8;
+    v6.branch = v2;
     v7.addOperand({value: v9, srcBranch: v4});
     v7.addOperand({value: v10, srcBranch: v5});
     v7.merge = v6;

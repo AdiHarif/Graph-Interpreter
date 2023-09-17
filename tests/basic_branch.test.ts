@@ -26,6 +26,7 @@ describe('Basic branch test', () => {
     storeTrue.next = merge;
     storeFalse.next = merge;
     merge.next = load;
+    merge.branch = branch;
     load.next = ret;
     ret.value = load;
     storeFalse.object = storeTrue.object = load.object = alloc;

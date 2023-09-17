@@ -18,6 +18,7 @@ describe('Basic while test', () => {
 
     v0.next = v3;
     v3.next = v2;
+    v3.branch = v2;
     v8.next = v3;
     v2.trueNext = v8;
     v2.falseNext = v10;

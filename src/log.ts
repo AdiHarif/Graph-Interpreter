@@ -1,7 +1,13 @@
 import assert from 'assert';
 import { Vertex} from 'graphir';
 import { State } from './state'
+import { DataVariant } from './concrete_interpreter';
 
+/**
+ * Utility class for creating and managing a debug log file for debugging purposes.
+ * You can use this class to log messages and debug information during program execution.
+ * This is useful to synchronize actions when running jest, which is executed in parallel.
+ */
 export class DebugLog {
     private fs;
     private fd: any;
@@ -31,7 +37,7 @@ export class DebugLog {
         this.fs.writeSync(this.fd, `# --- end --- vertex-${node.id} --- kind-${node.kind} ---\n`);
     }
 
-    public dumpState(state: State) {
+    public dumpState(state: State<DataVariant>) {
         this.fs.writeSync(this.fd, `The top state in the stack:\n`);
         let printList = state.peek();
         for (let line of printList) {
