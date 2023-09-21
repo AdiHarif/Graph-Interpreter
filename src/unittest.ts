@@ -1,5 +1,6 @@
 import * as ir from 'graphir';
 import { Bug } from './bug';
+import * as ge from '../../TS-Graph-Extractor'
 import { symbolicExecuteGraph } from './symbolicExecution';
 import { SymbolicExpression } from './symbolic_interpreter';
 
@@ -58,9 +59,9 @@ async function testEquationWithSolution(): Promise<void> {
     const v2 = new ir.StartVertex();
     const ep = new ir.SymbolVertex('entry point', v2);
     // the function's parameters (symbolic values) specify their types
-    const d0 = new ir.LiteralVertex("Real");
-    const d1 = new ir.LiteralVertex("Real");
-    const d2 = new ir.LiteralVertex("Real");
+    const d0 = new ir.LiteralVertex(0);
+    const d1 = new ir.LiteralVertex(0);
+    const d2 = new ir.LiteralVertex(0);
     // parameters - the symbols
     const x = new ir.ParameterVertex(0); // symbolic 0
     const y = new ir.ParameterVertex(1); // symbolic 1
@@ -142,9 +143,9 @@ async function testEquationWithoutSolution(): Promise<void> {
     const v2 = new ir.StartVertex();
     const ep = new ir.SymbolVertex('entry point', v2);
     // the function's parameters (symbolic values) specify their types
-    const d0 = new ir.LiteralVertex("Real");
-    const d1 = new ir.LiteralVertex("Real");
-    const d2 = new ir.LiteralVertex("Real");
+    const d0 = new ir.LiteralVertex(0);
+    const d1 = new ir.LiteralVertex(0);
+    const d2 = new ir.LiteralVertex(0);
     // parameters - the symbols
     const x = new ir.ParameterVertex(0); // symbolic 0
     const y = new ir.ParameterVertex(1); // symbolic 1
@@ -229,9 +230,9 @@ async function testMergeAndPhi(): Promise<void> {
     const v2 = new ir.StartVertex();
     const ep = new ir.SymbolVertex('entry point', v2);
     // the function's parameters (symbolic values) specify their types
-    const d0 = new ir.LiteralVertex("Bool");
-    const d1 = new ir.LiteralVertex("Real");
-    const d2 = new ir.LiteralVertex("Bool");
+    const d0 = new ir.LiteralVertex(true);
+    const d1 = new ir.LiteralVertex(0);
+    const d2 = new ir.LiteralVertex(true);
     // parameters - the symbols
     const a = new ir.ParameterVertex(0); // symbolic 0
     const b = new ir.ParameterVertex(1); // symbolic 1
@@ -354,7 +355,7 @@ async function testCallWithReturnValue(): Promise<void> {
     const v2 = new ir.StartVertex();
     const ep = new ir.SymbolVertex('entry point', v2);
     // the function's parameters (symbolic values) specify their types
-    const d0 = new ir.LiteralVertex("Real");
+    const d0 = new ir.LiteralVertex(0);
     // parameters - the symbols
     const x = new ir.ParameterVertex(0); // symbolic 0
     const v3 = new ir.CallVertex(ep, [d0]);
@@ -441,7 +442,7 @@ async function testLoadAndStore(): Promise<void> {
     const v2 = new ir.StartVertex();
     const ep = new ir.SymbolVertex('entry point', v2);
     // the function's parameters (symbolic values) specify their types
-    const d0 = new ir.LiteralVertex("Real"); // q
+    const d0 = new ir.LiteralVertex(0); // q
     // parameters - the symbols
     const q = new ir.ParameterVertex(0); // symbolic 0
     const v3 = new ir.CallVertex(ep, [d0]);
@@ -567,10 +568,10 @@ async function testLongMixedCode(): Promise<void> {
     const v2 = new ir.StartVertex();
     const ep = new ir.SymbolVertex('entry point', v2);
     // the function's parameters (symbolic values) specify their types
-    const d0 = new ir.LiteralVertex("Real"); // a
-    const d1 = new ir.LiteralVertex("Bool"); // b
-    const d2 = new ir.LiteralVertex("Real"); // c
-    const d3 = new ir.LiteralVertex("Real"); // d
+    const d0 = new ir.LiteralVertex(0); // a
+    const d1 = new ir.LiteralVertex(true); // b
+    const d2 = new ir.LiteralVertex(0); // c
+    const d3 = new ir.LiteralVertex(0); // d
     // parameters - the symbols
     const a = new ir.ParameterVertex(0); // symbolic 0
     const b = new ir.ParameterVertex(1); // symbolic 1
@@ -814,205 +815,12 @@ async function testLongMixedCode(): Promise<void> {
     await symbolicExecuteGraph(g, 'entry point', terminateAfterFirstBug, decisionMetricString, defaultTimeout);
 }
 
-async function testHiddenAssert(): Promise<void> {
-    // Symbolic values: a, b
-    //     if (a > 0 && b > 0) {
-    //         if (a <= b) {
-    //             let i = 6;
-    //             while (i > 0) {
-    //                 bar(b);
-    //                 i = i - 1;
-    //             }
-    //         }
-    //         else {
-    //             let i = 0;
-    //             while (i < 4) {
-    //                 i = bar(a + i);
-    //             }
-    //             assert(i != 70 && b != 1);
-    //         }
-    //     }
-    // }
-    //
-    // function bar(s: number) {
-    //     let i = 0;
-    //     while (i < s + 3) {
-    //         if (s < 5) {
-    //             i = i + 1;
-    //         }
-    //         else {
-    //             i = i + 2;
-    //         }
-    //     }
-    //     return i;
-    // }
-
-    const v1 = new ir.StartVertex();
-    const globalRet = new ir.ReturnVertex();
-
-    // entry point
-    const v2 = new ir.StartVertex();
-    const ep = new ir.SymbolVertex('entry point', v2);
-    // the function's parameters (symbolic values) specify their types
-    const d0 = new ir.LiteralVertex("Real"); // a
-    const d1 = new ir.LiteralVertex("Real"); // b
-    // parameters - the symbols
-    const a = new ir.ParameterVertex(0); // symbolic 0
-    const b = new ir.ParameterVertex(1); // symbolic 1
-    const v3 = new ir.CallVertex(ep, [d0, d1]);
-    v1.next = v3;
-    v3.next = globalRet; // not reachable
-
-    // function bar(s: number) {
-    //     let i = 0;
-    //     while (i < s + 3) {
-    //         if (s < 5) {
-    //             i = i + 1;
-    //         }
-    //         else {
-    //             i = i + 2;
-    //         }
-    //     }
-    //     return i;
-    // }
-
-    const v4 = new ir.StartVertex();
-    const v5 = new ir.SymbolVertex('bar', v4); // bar
-    const v6 = new ir.MergeVertex();
-    v4.next = v6;
-    const v7 = new ir.BranchVertex(); // while
-    v6.next = v7;
-    v6.branch = v7;
-    const v8 = new ir.ReturnVertex();
-    v7.falseNext = v8;
-    const v9 = new ir.BranchVertex(); // if
-    v7.trueNext = v9;
-    const v10 = new ir.PassVertex();
-    const v11 = new ir.PassVertex();
-    v9.trueNext = v10;
-    v9.falseNext = v11;
-    const v12 = new ir.MergeVertex();
-    v12.branch = v9;
-    v10.next = v12;
-    v11.next = v12;
-    v12.next = v6;
-    const v13 = new ir.ParameterVertex(0);
-    const v14 = new ir.LiteralVertex(5);
-    const v15 = new ir.BinaryOperationVertex('<', v13, v14);
-    v9.condition = v15;
-    const v16 = new ir.LiteralVertex(3);
-    const v17 = new ir.BinaryOperationVertex('+', v13, v16);
-    const v18 = new ir.LiteralVertex(0);
-    const v19 = new ir.PhiVertex(); // i
-    v19.merge = v6;
-    const v20 = new ir.BinaryOperationVertex('<', v19, v17);
-    v7.condition = v20;
-    const v21 = new ir.LiteralVertex(1);
-    const v59 = new ir.LiteralVertex(2);
-    const v22 = new ir.BinaryOperationVertex('+', v19, v21);
-    const v23 = new ir.BinaryOperationVertex('+', v19, v59);
-    const v24 = new ir.PhiVertex();
-    v24.merge = v12;
-    v24.addOperand({value: v22, srcBranch: v10});
-    v24.addOperand({value: v23, srcBranch: v11});
-    v19.addOperand({value: v18, srcBranch: v4});
-    v19.addOperand({value: v24, srcBranch: v12});
-    v8.value = v19;
-
-    //     if (a > 0 && b > 0) {
-
-    const v25 = new ir.BranchVertex();
-    v2.next = v25;
-    const v26 = new ir.LiteralVertex(0);
-    const v27 = new ir.BinaryOperationVertex('>', a, v26);
-    const v28 = new ir.BinaryOperationVertex('>', b, v26);
-    const v29 = new ir.BinaryOperationVertex('&&', v27, v28);
-    v25.condition = v29;
-    const v41 = new ir.MergeVertex();
-    v41.branch = v25
-    const v55 = new ir.PassVertex();
-    v55.next = v41;
-    const v58 = new ir.ReturnVertex();
-    v41.next = v58;
-
-    //         if (a <= b) {
-    //             let i = 6;
-    //             while (i > 0) {
-    //                 bar(b);
-    //                 i = i - 1;
-    //             }
-    //         }
-
-    const v30 = new ir.BranchVertex();
-    v25.trueNext = v30;
-    const v31 = new ir.BinaryOperationVertex('<=', a, b);
-    v30.condition = v31;
-    const v32 = new ir.MergeVertex();
-    v30.trueNext = v32;
-    const v33 = new ir.PhiVertex(); // i
-    v33.merge = v32;
-    const v34 = new ir.LiteralVertex(1);
-    const v35 = new ir.BinaryOperationVertex('-', v33, v34);
-    const v36 = new ir.LiteralVertex(6);
-    const v37 = new ir.BranchVertex(); // while
-    v32.branch = v37;
-    const v38 = new ir.BinaryOperationVertex('>', v33, v26);
-    v37.condition = v38;
-    v32.next = v37;
-    const v39 = new ir.CallVertex(v5, [b]);
-    v37.trueNext = v39;
-    v39.next = v32;
-    v33.addOperand({value: v35, srcBranch: v39});
-    v33.addOperand({value: v36, srcBranch: v30});
-    const v40 = new ir.MergeVertex(); // inside if-else
-    v40.next = v41;
-    v40.branch = v30;
-    v37.falseNext = v40;
-    v30.falseNext = v40;
-    
-    //         else {
-    //             let i = 0;
-    //             while (i < 4) {
-    //                 i = bar(a + i);
-    //             }
-    //             assert(i != 8 && b != 1);
-    //         }
-    //     }
-    // }
-
-    const v42 = new ir.MergeVertex();
-    v25.falseNext = v42;
-    const v43 = new ir.BranchVertex(); // while
-    const v56 = new ir.LiteralVertex(4);
-    v42.branch = v43;
-    v42.next = v43;
-    const v44 = new ir.PhiVertex(); // i
-    const v57 = new ir.BinaryOperationVertex('<', v44, v56);
-    v43.condition = v57;
-    v44.merge = v42;
-    const v45 = new ir.BinaryOperationVertex('+', a, v44);
-    const v46 = new ir.CallVertex(v5, [v45]);
-    v43.trueNext = v46;
-    v46.next = v42;
-    v44.addOperand({value: v26, srcBranch: v25});
-    v44.addOperand({value: v46, srcBranch: v46});
-
-    const v47 = new ir.StartVertex(); // assert call start vertex - not reachable
-    const v48 = new ir.SymbolVertex('assert', v47);
-    const ret = new ir.ReturnVertex(); // not reachable
-    v47.next = ret;
-
-    const v49 = new ir.LiteralVertex(1);
-    const v50 = new ir.LiteralVertex(8);
-    const v51 = new ir.BinaryOperationVertex('!=', v44, v50);
-    const v52 = new ir.BinaryOperationVertex('!=', b, v49);
-    const v53 = new ir.BinaryOperationVertex('&&', v51, v52);
-    const v54 = new ir.CallVertex(v48, [v53]);
-    v43.falseNext = v54;
-    v54.next = v40;
-    
-    const g = new ir.Graph([globalRet, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, a, b, ret], v1);
-    await symbolicExecuteGraph(g, 'entry point', terminateAfterFirstBug, decisionMetricString, defaultTimeout);
+async function testGraphFromExtractor(): Promise<void> {
+    // ** This test is during integration and currently doesn't work **
+    const g = ge.extractFromPath("graph_to_test.ts");
+    const debug = 4;
+    console.log("id: " + g.vertices[debug].id + ", kind: " + g.vertices[debug].kind + ", label: " + g.vertices[debug].label);
+    await symbolicExecuteGraph(g, 'main', terminateAfterFirstBug, decisionMetricString, defaultTimeout);
 }
 
 async function main() {
@@ -1059,7 +867,7 @@ async function main() {
         new AsyncUnitTest('Call with return value', testCallWithReturnValue),        // 3
         new AsyncUnitTest('Load and store', testLoadAndStore),                       // 4
         new AsyncUnitTest('Long mixed code', testLongMixedCode),                     // 5
-        new AsyncUnitTest('Hidden assert', testHiddenAssert),                        // 6
+        new AsyncUnitTest('Graph from extractor', testGraphFromExtractor),           // 6
     ];
     await symbexTestSuite[testIndex].runTest();
 }
