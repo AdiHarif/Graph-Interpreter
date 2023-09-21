@@ -7,3 +7,6 @@ dist/
 
 # VS Code files
 .vscode/
+
+# Output files
+log.txt
