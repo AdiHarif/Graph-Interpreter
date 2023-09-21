@@ -1,9 +1,10 @@
 import assert from 'assert';
 import * as ir from 'graphir';
 import * as z3 from 'z3-solver';
+import PriorityQueue from 'ts-priority-queue';
 import { SymbolicExpression } from "./symbolic_interpreter";
 import { State, VertexId } from './state';
-import { Path } from './path';
+import { Path, comparePaths } from './path';
 import { Bug } from './bug';
 
 export let z3Context: z3.Context<"main">;
@@ -22,8 +23,10 @@ class SymbolicExecution {
     private _decisionMetric: string;
     private _timeout: number;
 
+    // paths queue sorted by total global visit count in decreasing order
+    private _pathsPriorityQueue: PriorityQueue<Path>;
+
     private _symbols: Array<SymbolicExpression> = [];
-    private _pathsQueue: Array<Path> = []; // FIFO
     private _bugsList: Array<Bug> = [];
     private _globalVisitCount: { [key: VertexId]: number } = {}; 
     private _globalBugPotentialScore: { [key: VertexId]: number } = {};
@@ -40,9 +43,10 @@ class SymbolicExecution {
         this._decisionMetric = decisionMetricString;
         this._timeout = timeout;
         this._startTime = startTime;
+        this._pathsPriorityQueue = new PriorityQueue({ comparator: comparePaths });
     }
 
-    printResult() {
+    public printResult() {
         let time: number = (new Date().getTime() - this._startTime) / 1000;
         console.log("# Symbolic Execution Terminated #");
         console.log("Timeout:                   " + this._timeout + " seconds");
@@ -70,27 +74,23 @@ class SymbolicExecution {
         this._globalVisitCount = globalVisitCount;
     }
 
-    terminateAfterFirstBug(): boolean {
+    public terminateAfterFirstBug(): boolean {
         return this._terminateAfterFirstBug;
     }
 
-    pushPath(newPath: Path) {
-        this._pathsQueue.push(newPath);
+    public pushPath(newPath: Path) {
+        this._pathsPriorityQueue.queue(newPath);
         this._totalNumOfPaths++;
     }
 
-    removePath(pathToRemove: Path) {
-        this._pathsQueue = this._pathsQueue.filter(path => path != pathToRemove);
-    }
-
     get nextPath(): Path | undefined {
-        if (this._pathsQueue.length == 0) {
+        if (this._pathsPriorityQueue.length == 0) {
             return undefined;
         }
-        return this._pathsQueue[0];
+        return this._pathsPriorityQueue.dequeue();
     }
 
-    addSymbol(symbol: SymbolicExpression) {
+    public addSymbol(symbol: SymbolicExpression) {
         this._symbols.push(symbol);
     }
 
@@ -98,11 +98,11 @@ class SymbolicExecution {
         return this._symbols;
     }
 
-    addBug(bug: Bug) {
+    private addBug(bug: Bug) {
         this._bugsList.push(bug);
     }
 
-    public visitNode(path: Path, node: ir.ControlVertex) {
+    private visitNode(path: Path, node: ir.ControlVertex) {
         if (this._globalVisitCount[node.id] == undefined) {
             assert(false, `visitNode - globalVisitCount[${node.id}] is undefined`)
         }
@@ -113,7 +113,7 @@ class SymbolicExecution {
     // increment visit count without visiting - used for unreachable nodes
     // because of GraphIR limitations, some nodes are required to build the graph
     // but they are not being visited during the analysis
-    public incrementVisitCount(id: VertexId) {
+    private incrementVisitCount(id: VertexId) {
         if (this._globalVisitCount[id] == undefined) {
             assert(false, `visitNode - globalVisitCount[${id}] is undefined`)
         }
@@ -132,6 +132,17 @@ class SymbolicExecution {
         return (numOfVisitedNodes / numOfNodes) * 100;
     }
 
+    // sum the total global visit count of all nodes along the given sequence
+    // use sequence and not path because the result is given to the path
+    // constructor when pushing a new path to the priority queue
+    private getPathTotalVisitCount(sequence: Array<ir.ControlVertex>) {
+        let pathTotalVisitCount = 0;
+        for (let node of sequence) {
+            pathTotalVisitCount += this._globalVisitCount[node.id];
+        }
+        return pathTotalVisitCount;
+    }
+
     public get decisionMetric(): string {
         return this._decisionMetric;
     }
@@ -143,7 +154,7 @@ class SymbolicExecution {
 
     // give a score of 1 point to each node in the path
     // called when an assert is reached but not hit
-    public setBugPotentialScore(path: Path) {
+    private setBugPotentialScore(path: Path) {
         for (let node of path.nodeSequence) {
             if (this._globalBugPotentialScore[node.id] == undefined) {
                 this._globalBugPotentialScore[node.id] = 1;
@@ -171,7 +182,7 @@ class SymbolicExecution {
      * @param path - The program execution path to be executed.
      * @returns `true` if a bug is found during execution, `false` otherwise.
      */
-    async symbolicExecutePath(path: Path): Promise<boolean> {
+    public async symbolicExecutePath(path: Path): Promise<boolean> {
         let previousNode: ir.ControlVertex | undefined = path.nodeBeforeTail;
         let currentNode: ir.ControlVertex | undefined = path.tail;
         let nextNode: ir.ControlVertex | undefined;
@@ -229,7 +240,7 @@ class SymbolicExecution {
      * @param node - The assertion node to be evaluated.
      * @returns A control vertex for the next step in the path.
      */
-    async handleAssert(path: Path, node: ir.CallVertex): Promise<ir.ControlVertex | undefined> {
+    private async handleAssert(path: Path, node: ir.CallVertex): Promise<ir.ControlVertex | undefined> {
         let args: Array<ir.DataVertex> = node.args!;
         assert(args.length == 1, `Reached assert with other than 1 condition!`);
 
@@ -297,7 +308,7 @@ class SymbolicExecution {
      * @param node - The branch node to be evaluated.
      * @returns A control vertex for the next step in the path.
      */
-    async symbolicExecuteBranchNode(path: Path, node: ir.BranchVertex): Promise<ir.ControlVertex | undefined> {
+    private async symbolicExecuteBranchNode(path: Path, node: ir.BranchVertex): Promise<ir.ControlVertex | undefined> {
         // evaluate condition and path constraints
         let condition: SymbolicExpression = path.evaluateDataNode(path.getTopState(), node.condition as ir.DataVertex) as SymbolicExpression;
         let pathConstraints: SymbolicExpression | undefined = path.constraints;
@@ -345,14 +356,14 @@ class SymbolicExecution {
      * @param falsePathConstraints - The constraints for the false path.
      * @returns A control vertex for the chosen path.
      */
-    choosePath(path: Path, node: ir.BranchVertex, condition: SymbolicExpression, truePathConstraints: SymbolicExpression, falsePathConstraints: SymbolicExpression): ir.ControlVertex {
+    private choosePath(path: Path, node: ir.BranchVertex, condition: SymbolicExpression, truePathConstraints: SymbolicExpression, falsePathConstraints: SymbolicExpression): ir.ControlVertex {
         let choice: boolean = decisionMetricsTable[this.decisionMetric](this, path, node.trueNext as ir.ControlVertex, node.falseNext as ir.ControlVertex);
 
         if (choice == true) {
             // proceed on the true path
             let sequence: Array<ir.ControlVertex> = path.cloneNodeSequence()
             sequence.push(node.falseNext!);
-            let falsePath: Path = new Path(path.cloneStatesStack(), path.fuel, path.cloneVisitCount(), sequence, falsePathConstraints);
+            let falsePath: Path = new Path(path.cloneStatesStack(), path.fuel, path.cloneVisitCount(), sequence, this.getPathTotalVisitCount(sequence), falsePathConstraints);
             this.pushPath(falsePath);
             path.addConstraint(condition);
             return node.trueNext as ir.ControlVertex;
@@ -361,7 +372,7 @@ class SymbolicExecution {
             // proceed on the false path
             let sequence: Array<ir.ControlVertex> = path.cloneNodeSequence()
             sequence.push(node.trueNext!);
-            let truePath: Path = new Path(path.cloneStatesStack(), path.fuel, path.cloneVisitCount(), sequence, truePathConstraints);
+            let truePath: Path = new Path(path.cloneStatesStack(), path.fuel, path.cloneVisitCount(), sequence, this.getPathTotalVisitCount(sequence), truePathConstraints);
             this.pushPath(truePath);
             path.addConstraint((<z3.Bool>condition).not());
             return node.falseNext as ir.ControlVertex;
@@ -424,9 +435,9 @@ function initializeSymbolicExecution(symbex: SymbolicExecution, graph: ir.Graph,
     const { Real, Bool } = z3Context;
     for (let i = 0; i < args.length; i++) {
         let exp: SymbolicExpression;
-        let argType: ir.Value = (<ir.LiteralVertex>args[i]).value!;
-        assert(argType == "Bool" || argType == "Real", `Symbolic argument #${i} doesn't specify its type. value: ${argType}`);
-        if (argType == "Real") {
+        let argType: ir.Value = typeof (<ir.LiteralVertex>args[i]).value!;
+        assert(argType == 'boolean' || argType == 'number', `Symbolic argument #${i} doesn't specify its type. value: ${argType}`);
+        if (argType == 'number') {
             exp = Real.const(`p${i}`);
         }
         else {
@@ -437,7 +448,7 @@ function initializeSymbolicExecution(symbex: SymbolicExecution, graph: ir.Graph,
     }
 
     // initiate the main path
-    let mainPath: Path = new Path([globalState], 500, {}, [entryNode]);
+    let mainPath: Path = new Path([globalState], 500, {}, [entryNode], 0);
     symbex.pushPath(mainPath);
 }
 
@@ -488,7 +499,6 @@ export async function symbolicExecuteGraph(graph: ir.Graph, functionToAnalyze: s
                 break;
             }
         }
-        symbex.removePath(currentPath);
     }
 
     clearTimeout(timeoutId);

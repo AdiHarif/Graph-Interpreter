@@ -8,6 +8,9 @@ export class Path extends SymbolicInterpreter {
     // The remaining execution budget for the path
     private _fuel: number;
 
+    // Used to sort the paths priority queue
+    private _grade: number = 0;
+
     // The constraints that were collected on the path
     private _constraints: SymbolicExpression | undefined;
 
@@ -17,9 +20,10 @@ export class Path extends SymbolicInterpreter {
     // The sequence of nodes that were visited in the path
     private _nodeSequence: Array<ir.ControlVertex> = [];
 
-    constructor(statesStack: Array<State<SymbolicExpression>>, fuel: number, visitCount: { [key: VertexId]: number }, nodeSequence: Array<ir.ControlVertex>, constraints?: SymbolicExpression) {
+    constructor(statesStack: Array<State<SymbolicExpression>>, fuel: number, visitCount: { [key: VertexId]: number }, nodeSequence: Array<ir.ControlVertex>, grade: number, constraints?: SymbolicExpression) {
         super(statesStack);
         this._fuel = fuel;
+        this._grade = grade;
         this._constraints = constraints;
         this._visitCount = visitCount;
         this._nodeSequence = nodeSequence;
@@ -93,4 +97,15 @@ export class Path extends SymbolicInterpreter {
     public get nodeSequence(): Array<ir.ControlVertex> {
         return this._nodeSequence;
     }
+
+    public get grade(): number {
+        return this._grade;
+    }
+}
+
+// the path with the lowest total global visit count (less traveled by vertices)
+// will be the first path to be executed
+export function comparePaths(path1: Path, path2: Path): number {
+    // smaller grade wins
+    return path1.grade - path2.grade;
 }
