@@ -211,7 +211,7 @@ class SymbolicExecution {
                         return true;
                     }
                 } catch(err) {
-                    console.log("error in assert node: " + err);
+                    console.log("error in assert node " + currentNode.id + ": " + err);
                     process.exit(1);
                 }    
             }

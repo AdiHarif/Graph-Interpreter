@@ -816,10 +816,7 @@ async function testLongMixedCode(): Promise<void> {
 }
 
 async function testGraphFromExtractor(): Promise<void> {
-    // ** This test is during integration and currently doesn't work **
     const g = ge.extractFromPath("graph_to_test.ts");
-    const debug = 4;
-    console.log("id: " + g.vertices[debug].id + ", kind: " + g.vertices[debug].kind + ", label: " + g.vertices[debug].label);
     await symbolicExecuteGraph(g, 'main', terminateAfterFirstBug, decisionMetricString, defaultTimeout);
 }
 
